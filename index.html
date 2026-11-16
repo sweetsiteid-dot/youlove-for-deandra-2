@@ -1,869 +1,914 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Our Little Cinema | Akbar & Deandra</title>
+<meta name="theme-color" content="#09090d">
+<title>OUR LITTLE CINEMA | Akbar & Deandra</title>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
 
 <style>
 :root {
-  --bg: #090909;
-  --card: #151515;
-  --red: #e63950;
-  --text: #fff;
-  --muted: #999;
-  --border: #292929;
+  --bg:#09090d;
+  --panel:#14141b;
+  --panel2:#1d1d26;
+  --red:#ed3655;
+  --red2:#a90d30;
+  --text:#fff;
+  --muted:#9999a8;
+  --border:#2a2934;
+  --glow:rgba(237,54,85,.22);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:Inter,sans-serif;overflow-x:hidden;
+  transition:background .4s;
+}
+body.light{
+  --bg:#eeeef2;--panel:#fff;--panel2:#e7e7ee;
+  --text:#17171e;--muted:#686879;--border:#d8d8e0;
+  --glow:rgba(237,54,85,.12);
+}
+button,input{font:inherit}
+button{cursor:pointer}
+button:focus-visible,input:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+::selection{background:var(--red);color:white}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-thumb{background:var(--red);border-radius:10px}
+
+/* BACKGROUND */
+.background-glow{
+  position:fixed;inset:0;pointer-events:none;z-index:-3;
+  background:
+  radial-gradient(ellipse at 10% 15%,rgba(160,20,55,.13),transparent 35%),
+  radial-gradient(ellipse at 90% 55%,rgba(80,20,90,.09),transparent 35%);
+}
+#particles{position:fixed;inset:0;pointer-events:none;z-index:20;overflow:hidden}
+.particle{position:absolute;bottom:-30px;color:#ff5573;animation:floatUp linear forwards;opacity:0}
+@keyframes floatUp{
+  0%{transform:translateY(0) rotate(0) scale(.5);opacity:0}
+  15%{opacity:.7}
+  100%{transform:translateY(-110vh) rotate(360deg) scale(1.4);opacity:0}
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+/* INTRO */
+.intro{
+  position:fixed;inset:0;background:#08080c;z-index:9999;
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;text-align:center;
+  transition:opacity 1s,visibility 1s;
 }
-
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: Inter, sans-serif;
-  overflow-x: hidden;
-}
-
-button {
-  cursor: pointer;
-  font-family: inherit;
-  border: none;
-}
-
-/* LOADING */
-
-.loading {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  background: #080808;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  transition: .8s;
-}
-
-.loading.hide {
-  opacity: 0;
-  visibility: hidden;
-}
-
-.loading-heart {
-  font-size: 48px;
-  color: var(--red);
-  animation: heartbeat 1s infinite;
-}
-
-.loading p {
-  margin-top: 20px;
-  color: #aaa;
-  font-size: 10px;
-  letter-spacing: 4px;
-}
-
-@keyframes heartbeat {
-  50% { transform: scale(1.3); }
-}
+.intro.hide{opacity:0;visibility:hidden}
+.intro-heart{font-size:65px;color:var(--red);animation:heartbeat 1s infinite}
+.intro h1{font-family:'Playfair Display',serif;font-size:clamp(28px,6vw,48px);margin:20px 0 10px}
+.intro p{font-size:10px;letter-spacing:5px;color:#aaa}
+.intro-line{height:2px;width:160px;background:#292929;margin-top:25px;overflow:hidden}
+.intro-line:after{content:"";display:block;height:100%;width:50%;background:var(--red);animation:loading 1s infinite alternate}
+@keyframes loading{to{transform:translateX(100%)}}
+@keyframes heartbeat{50%{transform:scale(1.25)}}
 
 /* HEADER */
-
-header {
-  height: 72px;
-  padding: 0 6%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid var(--border);
-  position: sticky;
-  top: 0;
-  background: rgba(9,9,9,.95);
-  backdrop-filter: blur(15px);
-  z-index: 100;
+header{
+  height:70px;position:sticky;top:0;z-index:100;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:0 5%;background:rgba(10,10,15,.87);
+  backdrop-filter:blur(18px);border-bottom:1px solid var(--border)
 }
-
-.logo {
-  font-weight: 800;
-  font-size: 17px;
-  letter-spacing: 1px;
+.light header{background:rgba(255,255,255,.9)}
+.logo{font-weight:800;font-size:15px;letter-spacing:1px}
+.logo span{color:var(--red)}
+.header-right{display:flex;gap:12px;align-items:center}
+.header-clock{font-size:11px;color:var(--muted)}
+.round-btn{
+  width:36px;height:36px;border-radius:50%;background:var(--panel2);
+  color:var(--text);border:1px solid var(--border);transition:.3s
 }
+.round-btn:hover{background:var(--red);color:white;transform:rotate(12deg)}
 
-.logo span {
-  color: var(--red);
+/* LAYOUT */
+.layout{display:flex;min-height:calc(100vh - 70px)}
+.sidebar{
+  width:220px;flex-shrink:0;padding:25px 14px;
+  border-right:1px solid var(--border);
+  position:sticky;top:70px;height:calc(100vh - 70px)
 }
-
-.header-right {
-  display: flex;
-  gap: 15px;
-  align-items: center;
-  color: #aaa;
-  font-size: 11px;
+.side-label{font-size:9px;color:var(--muted);letter-spacing:2px;margin:20px 12px 12px}
+.nav{
+  display:flex;align-items:center;gap:12px;width:100%;
+  background:transparent;color:var(--muted);padding:13px;
+  border-radius:10px;text-align:left;font-size:12px;
+  margin-bottom:5px;transition:.25s
 }
-
-.music-btn {
-  background: #242424;
-  color: white;
-  padding: 10px 14px;
-  border-radius: 20px;
-  font-size: 11px;
-}
-
-.music-btn.active {
-  background: var(--red);
-}
+.nav:hover,.nav.active{background:var(--panel2);color:var(--text)}
+.nav.active{border-left:3px solid var(--red)}
+.nav .ico{font-size:17px;width:22px;text-align:center}
+.content{flex:1;min-width:0;padding:35px 4% 0}
 
 /* HERO */
-
-.hero {
-  padding: 65px 20px 45px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
+.hero{
+  min-height:265px;border:1px solid var(--border);border-radius:22px;
+  padding:40px;display:flex;align-items:center;justify-content:space-between;
+  gap:20px;position:relative;overflow:hidden;
+  background:linear-gradient(120deg,#211018,#12121a 65%,#21121b);
+  margin-bottom:30px;animation:fadeUp .8s both
+}
+.hero:after{
+  content:"♥";position:absolute;right:7%;top:50%;
+  transform:translateY(-50%);font-size:180px;
+  color:rgba(255,255,255,.035);animation:heartbeat 3s infinite
+}
+.hero-content{position:relative;z-index:1}
+.eyebrow{color:#ff758d;font-size:10px;letter-spacing:4px;font-weight:700}
+.hero h1{font:700 clamp(35px,5vw,62px) 'Playfair Display',serif;margin:17px 0}
+.hero h1 span{color:#ff5b79;font-style:italic}
+.hero p{color:#c0b5bc;font-size:12px;line-height:1.9}
+.hero-date{color:#ff879a!important;margin-top:12px}
+.hero-badge{
+  position:relative;z-index:1;background:#ffffff13;border:1px solid #ffffff25;
+  padding:13px 18px;border-radius:30px;font-size:10px;white-space:nowrap
 }
 
-.hero::before {
-  content: "";
-  position: absolute;
-  width: 350px;
-  height: 350px;
-  background: var(--red);
-  filter: blur(180px);
-  opacity: .15;
-  top: -200px;
-  left: calc(50% - 175px);
+/* COUNTER */
+.counter{
+  background:var(--panel);border:1px solid var(--border);border-radius:18px;
+  padding:25px;margin-bottom:40px;text-align:center
 }
-
-.eyebrow {
-  color: var(--red);
-  font-size: 10px;
-  letter-spacing: 5px;
-  margin-bottom: 20px;
-  font-weight: 700;
+.counter h2{font:600 23px 'Playfair Display',serif}
+.counter>p{color:var(--muted);font-size:11px;margin-top:8px}
+.counter-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:25px}
+.counter-item{
+  background:var(--panel2);padding:17px 5px;border-radius:12px;
+  transition:.3s
 }
+.counter-item:hover{transform:translateY(-5px);box-shadow:0 8px 25px var(--glow)}
+.counter-item strong{display:block;color:var(--red);font-size:29px}
+.counter-item span{font-size:9px;letter-spacing:2px;color:var(--muted)}
 
-.hero h1 {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(35px, 6vw, 65px);
-  margin-bottom: 15px;
+/* SECTIONS */
+.section{margin-bottom:45px;scroll-margin-top:90px}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;gap:10px}
+.section-head h2{font-size:17px}
+.section-head small{color:var(--muted);font-size:10px}
+.pill{font-size:9px;background:var(--glow);color:var(--red);padding:7px 10px;border-radius:20px}
+
+/* VIDEO */
+.video-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.video-card{
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:15px;overflow:hidden;min-width:0;
+  transition:transform .35s,border-color .35s,box-shadow .35s;
+  animation:fadeUp .7s both
 }
-
-.hero h1 span {
-  color: var(--red);
-  font-style: italic;
+.video-card:hover{transform:translateY(-6px);border-color:#b53c54;box-shadow:0 15px 40px #0005}
+.video-frame{aspect-ratio:16/9;background:#000;position:relative;overflow:hidden}
+.video-frame video{width:100%;height:100%;display:block;object-fit:contain}
+.video-overlay{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  background:#0005;opacity:0;transition:.3s;pointer-events:none
 }
-
-.hero p {
-  color: #999;
-  font-size: 13px;
-  line-height: 1.8;
+.video-card:hover .video-overlay{opacity:1}
+.video-overlay span{font-size:35px;text-shadow:0 3px 20px #000}
+.video-info{padding:16px}
+.video-title{font-size:13px;font-weight:700}
+.video-desc{font-size:10px;color:var(--muted);margin:7px 0 13px;line-height:1.7}
+.video-meta{display:flex;justify-content:space-between;font-size:9px;color:var(--muted);margin-bottom:9px}
+.progress{height:3px;background:var(--panel2);border-radius:5px;overflow:hidden;margin-bottom:14px}
+.progress span{display:block;height:100%;width:0;background:var(--red);transition:width .2s}
+.actions{display:flex;flex-wrap:wrap;gap:7px}
+.action{
+  border:1px solid var(--border);background:var(--panel2);color:var(--text);
+  border-radius:7px;padding:9px 11px;font-size:10px;transition:.25s
 }
+.action:hover{background:var(--red);color:white;border-color:var(--red);transform:translateY(-2px)}
+.action.favorite{color:#ff5573}
+.status{font-size:9px;color:var(--muted);margin-top:12px}
 
-.heart-divider {
-  margin: 25px auto;
-  color: var(--red);
-  font-size: 19px;
+/* TOOLBAR */
+.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-top:22px}
+.tool{
+  border:1px solid var(--border);background:var(--panel);
+  color:var(--text);border-radius:9px;padding:12px 15px;
+  font-size:10px;transition:.25s
 }
+.tool:hover,.tool.primary{background:var(--red);border-color:var(--red);color:white}
 
-/* RELATIONSHIP COUNTER */
-
-.counter {
-  max-width: 650px;
-  margin: 0 auto 45px;
-  padding: 25px;
-  background: linear-gradient(135deg,#1c1114,#111);
-  border: 1px solid #46252c;
-  border-radius: 18px;
-  text-align: center;
+/* MUSIC */
+.music-panel{
+  display:flex;align-items:center;gap:18px;padding:20px;
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:15px
 }
-
-.counter h3 {
-  font-family: 'Playfair Display', serif;
-  font-size: 19px;
-  margin-bottom: 8px;
+.album{
+  width:65px;height:65px;flex-shrink:0;border-radius:12px;
+  background:linear-gradient(135deg,#4b1225,#e63958);
+  display:grid;place-items:center;font-size:28px
 }
+.album.spin{animation:spin 8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.music-details{flex:1;min-width:0}
+.music-details strong{font-size:12px}
+.music-details p{font-size:10px;color:var(--muted);margin-top:5px}
+.visualizer{display:flex;align-items:center;gap:3px;height:23px;margin-top:10px}
+.visualizer i{width:3px;height:5px;background:var(--red);border-radius:5px}
+.visualizer.playing i{animation:equalize .5s infinite alternate}
+.visualizer i:nth-child(2n){animation-delay:.2s}
+.visualizer i:nth-child(3n){animation-delay:.35s}
+@keyframes equalize{to{height:22px}}
+.music-controls{display:flex;gap:8px;align-items:center}
+.music-controls button{background:var(--panel2);color:var(--text);border-radius:50%;width:35px;height:35px}
+.music-controls button:hover{background:var(--red);color:white}
+.volume{width:75px;accent-color:var(--red)}
 
-.counter p {
-  color: #999;
-  font-size: 11px;
+/* MILESTONE */
+.milestones{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.milestone{
+  padding:18px;background:var(--panel);border:1px solid var(--border);
+  border-radius:12px;text-align:center;transition:.3s
 }
+.milestone:hover{transform:translateY(-5px);border-color:var(--red)}
+.milestone strong{font-size:13px;display:block;margin:8px 0}
+.milestone p{font-size:10px;color:var(--muted)}
 
-.counter-grid {
-  display: grid;
-  grid-template-columns: repeat(4,1fr);
-  gap: 12px;
-  margin-top: 25px;
+/* LETTER */
+.letter{
+  padding:35px 20px;border:1px solid var(--border);border-radius:18px;
+  text-align:center;background:linear-gradient(135deg,#211018,var(--panel));
 }
+.letter h2{font:600 29px 'Playfair Display',serif;color:#ff7189}
+.letter p{font-size:11px;color:#bbb;line-height:1.9;margin:12px 0 20px}
+.letter button{background:var(--red);color:white;border-radius:30px;padding:12px 22px;font-size:11px}
 
-.counter-item strong {
-  display: block;
-  color: var(--red);
-  font-size: 27px;
-  margin-bottom: 6px;
+/* MODAL */
+.modal{
+  position:fixed;inset:0;background:#000b;z-index:500;
+  display:flex;align-items:center;justify-content:center;
+  padding:18px;opacity:0;visibility:hidden;transition:.35s
 }
-
-.counter-item span {
-  font-size: 9px;
-  color: #888;
-  letter-spacing: 2px;
+.modal.show{opacity:1;visibility:visible}
+.modal-box{
+  max-width:480px;width:100%;padding:30px;
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:18px;position:relative;transform:translateY(20px);
+  transition:.35s;text-align:center
 }
+.modal.show .modal-box{transform:translateY(0)}
+.modal-box h2{font:600 26px 'Playfair Display',serif;color:var(--red);margin-bottom:17px}
+.modal-box p{font-size:12px;line-height:2;color:var(--muted);white-space:pre-line}
+.close-modal{position:absolute;right:15px;top:12px;background:none;color:var(--text);font-size:22px}
+.modal-input{width:100%;margin:18px 0 10px;padding:13px;background:var(--panel2);border:1px solid var(--border);border-radius:9px;color:var(--text)}
+.modal-submit{background:var(--red);color:white;padding:12px 20px;border-radius:9px;font-size:11px}
 
-/* CONTENT */
-
-.main {
-  max-width: 1250px;
-  margin: auto;
-  padding: 0 25px;
+/* TOAST */
+#toast{
+  position:fixed;bottom:25px;left:50%;transform:translate(-50%,30px);
+  background:#25232c;color:white;padding:13px 20px;border-radius:30px;
+  font-size:11px;opacity:0;visibility:hidden;z-index:800;
+  box-shadow:0 5px 25px #0008;transition:.35s;white-space:nowrap
 }
+#toast.show{opacity:1;visibility:visible;transform:translate(-50%,0)}
 
-.section-heading {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.section-heading h2 {
-  font-size: 18px;
-}
-
-.section-heading small {
-  color: #888;
-  font-size: 10px;
-}
-
-/* VIDEO GRID */
-
-.video-grid {
-  display: grid;
-  grid-template-columns: repeat(2,minmax(0,1fr));
-  gap: 23px;
-}
-
-.video-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 15px;
-  overflow: hidden;
-  transition: .3s;
-}
-
-.video-card:hover {
-  transform: translateY(-5px);
-  border-color: #65303a;
-  box-shadow: 0 15px 35px #0008;
-}
-
-.video-box {
-  width: 100%;
-  aspect-ratio: 16/9;
-  background: black;
-  position: relative;
-}
-
-.video-box video {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  display: block;
-}
-
-.video-info {
-  padding: 17px;
-}
-
-.video-title {
-  font-size: 14px;
-  font-weight: 700;
-  margin-bottom: 7px;
-}
-
-.video-desc {
-  font-size: 11px;
-  color: #888;
-  margin-bottom: 16px;
-  line-height: 1.7;
-}
-
-.video-controls {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.control {
-  background: #292929;
-  color: white;
-  padding: 9px 12px;
-  font-size: 10px;
-  border-radius: 7px;
-  transition: .2s;
-}
-
-.control:hover {
-  background: var(--red);
-}
-
-.control.main-btn {
-  background: var(--red);
-}
-
-.video-status {
-  color: #888;
-  font-size: 10px;
-  margin-top: 13px;
-}
-
-/* GLOBAL CONTROL */
-
-.toolbar {
-  margin: 30px 0 45px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
-}
-
-.tool {
-  padding: 12px 17px;
-  background: #202020;
-  border: 1px solid #333;
-  border-radius: 9px;
-  color: white;
-  font-size: 11px;
-  transition: .2s;
-}
-
-.tool:hover,
-.tool.active {
-  background: var(--red);
-  border-color: var(--red);
-}
-
-/* LOVE MESSAGE */
-
-.love-message {
-  max-width: 800px;
-  margin: 30px auto 60px;
-  padding: 40px 25px;
-  text-align: center;
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-}
-
-.love-message h2 {
-  font-family: 'Playfair Display',serif;
-  font-size: 30px;
-  color: var(--red);
-  margin-bottom: 18px;
-}
-
-.love-message p {
-  font-size: 13px;
-  line-height: 2;
-  color: #aaa;
-}
-
-/* FLOATING HEARTS */
-
-.heart {
-  position: fixed;
-  bottom: -30px;
-  color: var(--red);
-  opacity: .45;
-  pointer-events: none;
-  z-index: -1;
-  animation: floatUp 8s linear forwards;
-}
-
-@keyframes floatUp {
-  to {
-    transform: translateY(-110vh) rotate(360deg);
-    opacity: 0;
-  }
-}
-
-/* FOOTER */
-
-footer {
-  padding: 35px 15px;
-  text-align: center;
-  border-top: 1px solid var(--border);
-  color: #666;
-  font-size: 10px;
-  letter-spacing: 2px;
-}
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(25px);transition:opacity .7s,transform .7s}
+.reveal.visible{opacity:1;transform:translateY(0)}
+footer{text-align:center;padding:35px 15px;border-top:1px solid var(--border);color:var(--muted);font-size:9px;letter-spacing:2px}
+footer span{color:var(--red)}
 
 /* THEATER */
-
-body.theater .video-grid {
-  gap: 10px;
-}
-
-body.theater .video-card {
-  border-radius: 5px;
-}
+body.theater .sidebar{display:none}
+body.theater .content{padding:25px 2%}
+body.theater .video-grid{gap:10px}
+body.theater .video-card{border-radius:6px}
 
 /* MOBILE */
-
-@media(max-width:650px) {
-  header {
-    height: 60px;
-    padding: 0 15px;
-  }
-
-  .logo {
-    font-size: 12px;
-  }
-
-  .header-right {
-    gap: 8px;
-  }
-
-  .hero {
-    padding: 50px 15px 30px;
-  }
-
-  .main {
-    padding: 0 13px;
-  }
-
-  .video-grid {
-    grid-template-columns: 1fr;
-    gap: 17px;
-  }
-
-  .counter {
-    margin: 0 13px 35px;
-    padding: 20px 10px;
-  }
-
-  .counter-grid {
-    gap: 5px;
-  }
-
-  .counter-item strong {
-    font-size: 22px;
-  }
-
-  .counter-item span {
-    font-size: 8px;
-    letter-spacing: 1px;
-  }
-
-  .section-heading h2 {
-    font-size: 15px;
-  }
-
-  .toolbar {
-    gap: 7px;
-  }
-
-  .tool {
-    padding: 10px 11px;
-    font-size: 10px;
-  }
-
-  .love-message h2 {
-    font-size: 25px;
-  }
+@media(max-width:850px){
+  .sidebar{width:65px;padding:20px 7px}
+  .nav{justify-content:center;padding:13px 5px}
+  .nav .label,.side-label{display:none}
+}
+@media(max-width:600px){
+  header{height:60px;padding:0 13px}
+  .logo{font-size:11px}
+  .header-clock{display:none}
+  .sidebar{display:none}
+  .content{padding:20px 13px 0}
+  .hero{padding:28px 20px;min-height:220px}
+  .hero:after{font-size:100px;right:2%}
+  .hero-badge{display:none}
+  .hero h1{font-size:39px}
+  .counter{padding:20px 9px}
+  .counter-grid{gap:5px}
+  .counter-item{padding:14px 3px}
+  .counter-item strong{font-size:21px}
+  .counter-item span{font-size:7px;letter-spacing:1px}
+  .video-grid{grid-template-columns:1fr;gap:15px}
+  .milestones{grid-template-columns:1fr}
+  .music-panel{flex-wrap:wrap}
+  .music-controls{width:100%}
+  .volume{flex:1}
+  .section-head h2{font-size:14px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
 }
 </style>
 </head>
 
 <body>
 
-<!-- LOADING -->
-<div class="loading" id="loading">
-  <div class="loading-heart">♥</div>
-  <p>PREPARING OUR LITTLE CINEMA</p>
+<div class="background-glow"></div>
+<div id="particles"></div>
+
+<!-- INTRO -->
+<div class="intro" id="intro">
+  <div class="intro-heart">♥</div>
+  <h1>Akbar & Deandra</h1>
+  <p>OUR LITTLE CINEMA</p>
+  <div class="intro-line"></div>
 </div>
 
 <!-- HEADER -->
 <header>
   <div class="logo">OUR LITTLE <span>CINEMA ♥</span></div>
-
   <div class="header-right">
-    <span id="clock">00:00:00</span>
-    <button class="music-btn" id="musicBtn" onclick="toggleMusic()">
-      ♫ PLAY MUSIC
-    </button>
+    <span class="header-clock" id="clock">00:00:00</span>
+    <button class="round-btn" onclick="toggleTheme()" title="Ganti tema">☼</button>
+    <button class="round-btn" onclick="openLetter()" title="Love letter">✉</button>
   </div>
 </header>
 
+<div class="layout">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="side-label">MAIN MENU</div>
+  <button class="nav active" onclick="goTo('home',this)"><span class="ico">⌂</span><span class="label">Home</span></button>
+  <button class="nav" onclick="goTo('videos',this)"><span class="ico">▣</span><span class="label">Our Videos</span></button>
+  <button class="nav" onclick="goTo('music',this)"><span class="ico">♫</span><span class="label">Music Player</span></button>
+  <button class="nav" onclick="goTo('milestones',this)"><span class="ico">♡</span><span class="label">Our Journey</span></button>
+  <div class="side-label">SPECIAL</div>
+  <button class="nav" onclick="openLetter()"><span class="ico">✉</span><span class="label">Love Letter</span></button>
+  <button class="nav" onclick="secretPrompt()"><span class="ico">♙</span><span class="label">Secret Room</span></button>
+  <button class="nav" onclick="showFavorites()"><span class="ico">♥</span><span class="label">Favorites</span></button>
+  <div class="side-label">SETTINGS</div>
+  <button class="nav" onclick="randomVideo()"><span class="ico">⤨</span><span class="label">Random Video</span></button>
+  <button class="nav" onclick="toggleTheater()"><span class="ico">▤</span><span class="label">Cinema Mode</span></button>
+</aside>
+
+<main class="content" id="home">
+
 <!-- HERO -->
 <section class="hero">
-  <div class="eyebrow">A LITTLE WORLD FOR TWO</div>
-
-  <h1>Akbar <span>&</span> Deandra</h1>
-
-  <p>
-    Two hearts, one beautiful story.<br>
-    Every little moment deserves to be remembered.
-  </p>
-
-  <div class="heart-divider">──── ♥ ────</div>
+  <div class="hero-content">
+    <div class="eyebrow">A PRIVATE WORLD FOR TWO</div>
+    <h1>Akbar <span>&</span><br>Deandra.</h1>
+    <p>Two hearts, one story, countless memories.<br>Welcome to our little corner of happiness.</p>
+    <p class="hero-date">♥ SINCE 03 MARCH 2026</p>
+  </div>
+  <div class="hero-badge">✦ OUR LOVE STORY · 2026</div>
 </section>
 
 <!-- COUNTER -->
-<section class="counter">
-  <h3>Our Journey Together</h3>
-  <p>Since the day our story began · 03 March 2026</p>
-
+<section class="counter reveal">
+  <h2>Every Second With You ♥</h2>
+  <p>Counting every moment since our beginning</p>
   <div class="counter-grid">
-    <div class="counter-item">
-      <strong id="days">0</strong>
-      <span>DAYS</span>
-    </div>
-
-    <div class="counter-item">
-      <strong id="hours">00</strong>
-      <span>HOURS</span>
-    </div>
-
-    <div class="counter-item">
-      <strong id="minutes">00</strong>
-      <span>MINUTES</span>
-    </div>
-
-    <div class="counter-item">
-      <strong id="seconds">00</strong>
-      <span>SECONDS</span>
-    </div>
+    <div class="counter-item"><strong id="days">0</strong><span>DAYS</span></div>
+    <div class="counter-item"><strong id="hours">00</strong><span>HOURS</span></div>
+    <div class="counter-item"><strong id="minutes">00</strong><span>MINUTES</span></div>
+    <div class="counter-item"><strong id="seconds">00</strong><span>SECONDS</span></div>
   </div>
 </section>
 
 <!-- VIDEOS -->
-<main class="main">
-
-  <div class="section-heading">
+<section class="section reveal" id="videos">
+  <div class="section-head">
     <h2>▶ Our Video Collection</h2>
-    <small>04 SPECIAL MOMENTS</small>
+    <span class="pill">4 SPECIAL MOMENTS</span>
   </div>
 
-  <section class="video-grid">
+  <div class="video-grid">
 
-    <!-- VIDEO 1 -->
-    <article class="video-card">
-      <div class="video-box">
-        <video id="video1" src="video1.mp4"
-          autoplay muted loop playsinline preload="auto">
-        </video>
+    <article class="video-card" data-id="1">
+      <div class="video-frame">
+        <video id="video1" src="video1.mp4" autoplay muted loop playsinline preload="auto"></video>
+        <div class="video-overlay"><span>♥</span></div>
       </div>
-
       <div class="video-info">
         <div class="video-title">01. Our First Memory</div>
-        <div class="video-desc">A little moment worth remembering.</div>
-
-        <div class="video-controls">
-          <button class="control main-btn" onclick="playVideo(1)">▶ Play</button>
-          <button class="control" onclick="pauseVideo(1)">Ⅱ Pause</button>
-          <button class="control" onclick="muteVideo(1)">♫ Sound</button>
-          <button class="control" onclick="fullscreenVideo(1)">⛶ Fullscreen</button>
+        <div class="video-desc">A little moment worth remembering forever.</div>
+        <div class="video-meta"><span id="time1">00:00</span><span>VIDEO 01</span></div>
+        <div class="progress"><span id="progress1"></span></div>
+        <div class="actions">
+          <button class="action" onclick="playVideo(1)">▶ Play</button>
+          <button class="action" onclick="pauseVideo(1)">Ⅱ Pause</button>
+          <button class="action" onclick="muteVideo(1)">♫ Sound</button>
+          <button class="action" onclick="fullscreenVideo(1)">⛶</button>
+          <button class="action" onclick="pipVideo(1)">▣ PiP</button>
+          <button class="action favorite" id="fav1" onclick="favorite(1)">♡ Save</button>
         </div>
-
-        <div class="video-status" id="status1">♥ Ready</div>
+        <div class="status" id="status1">♥ Ready to play</div>
       </div>
     </article>
 
-    <!-- VIDEO 2 -->
-    <article class="video-card">
-      <div class="video-box">
-        <video id="video2" src="video2.mp4"
-          autoplay muted loop playsinline preload="auto">
-        </video>
+    <article class="video-card" data-id="2">
+      <div class="video-frame">
+        <video id="video2" src="video2.mp4" autoplay muted loop playsinline preload="auto"></video>
+        <div class="video-overlay"><span>♥</span></div>
       </div>
-
       <div class="video-info">
         <div class="video-title">02. Beautiful Moments</div>
         <div class="video-desc">Little things that make us smile.</div>
-
-        <div class="video-controls">
-          <button class="control main-btn" onclick="playVideo(2)">▶ Play</button>
-          <button class="control" onclick="pauseVideo(2)">Ⅱ Pause</button>
-          <button class="control" onclick="muteVideo(2)">♫ Sound</button>
-          <button class="control" onclick="fullscreenVideo(2)">⛶ Fullscreen</button>
+        <div class="video-meta"><span id="time2">00:00</span><span>VIDEO 02</span></div>
+        <div class="progress"><span id="progress2"></span></div>
+        <div class="actions">
+          <button class="action" onclick="playVideo(2)">▶ Play</button>
+          <button class="action" onclick="pauseVideo(2)">Ⅱ Pause</button>
+          <button class="action" onclick="muteVideo(2)">♫ Sound</button>
+          <button class="action" onclick="fullscreenVideo(2)">⛶</button>
+          <button class="action" onclick="pipVideo(2)">▣ PiP</button>
+          <button class="action favorite" id="fav2" onclick="favorite(2)">♡ Save</button>
         </div>
-
-        <div class="video-status" id="status2">♥ Ready</div>
+        <div class="status" id="status2">♥ Ready to play</div>
       </div>
     </article>
 
-    <!-- VIDEO 3 -->
-    <article class="video-card">
-      <div class="video-box">
-        <video id="video3" src="video3.mp4"
-          autoplay muted loop playsinline preload="auto">
-        </video>
+    <article class="video-card" data-id="3">
+      <div class="video-frame">
+        <video id="video3" src="video3.mp4" autoplay muted loop playsinline preload="auto"></video>
+        <div class="video-overlay"><span>♥</span></div>
       </div>
-
       <div class="video-info">
         <div class="video-title">03. Our Favorite Story</div>
         <div class="video-desc">Another chapter of our little journey.</div>
-
-        <div class="video-controls">
-          <button class="control main-btn" onclick="playVideo(3)">▶ Play</button>
-          <button class="control" onclick="pauseVideo(3)">Ⅱ Pause</button>
-          <button class="control" onclick="muteVideo(3)">♫ Sound</button>
-          <button class="control" onclick="fullscreenVideo(3)">⛶ Fullscreen</button>
+        <div class="video-meta"><span id="time3">00:00</span><span>VIDEO 03</span></div>
+        <div class="progress"><span id="progress3"></span></div>
+        <div class="actions">
+          <button class="action" onclick="playVideo(3)">▶ Play</button>
+          <button class="action" onclick="pauseVideo(3)">Ⅱ Pause</button>
+          <button class="action" onclick="muteVideo(3)">♫ Sound</button>
+          <button class="action" onclick="fullscreenVideo(3)">⛶</button>
+          <button class="action" onclick="pipVideo(3)">▣ PiP</button>
+          <button class="action favorite" id="fav3" onclick="favorite(3)">♡ Save</button>
         </div>
-
-        <div class="video-status" id="status3">♥ Ready</div>
+        <div class="status" id="status3">♥ Ready to play</div>
       </div>
     </article>
 
-    <!-- VIDEO 4 -->
-    <article class="video-card">
-      <div class="video-box">
-        <video id="video4" src="video4.mp4"
-          autoplay muted loop playsinline preload="auto">
-        </video>
+    <article class="video-card" data-id="4">
+      <div class="video-frame">
+        <video id="video4" src="video4.mp4" autoplay muted loop playsinline preload="auto"></video>
+        <div class="video-overlay"><span>♥</span></div>
       </div>
-
       <div class="video-info">
         <div class="video-title">04. Forever With You</div>
         <div class="video-desc">May our story never stop growing.</div>
-
-        <div class="video-controls">
-          <button class="control main-btn" onclick="playVideo(4)">▶ Play</button>
-          <button class="control" onclick="pauseVideo(4)">Ⅱ Pause</button>
-          <button class="control" onclick="muteVideo(4)">♫ Sound</button>
-          <button class="control" onclick="fullscreenVideo(4)">⛶ Fullscreen</button>
+        <div class="video-meta"><span id="time4">00:00</span><span>VIDEO 04</span></div>
+        <div class="progress"><span id="progress4"></span></div>
+        <div class="actions">
+          <button class="action" onclick="playVideo(4)">▶ Play</button>
+          <button class="action" onclick="pauseVideo(4)">Ⅱ Pause</button>
+          <button class="action" onclick="muteVideo(4)">♫ Sound</button>
+          <button class="action" onclick="fullscreenVideo(4)">⛶</button>
+          <button class="action" onclick="pipVideo(4)">▣ PiP</button>
+          <button class="action favorite" id="fav4" onclick="favorite(4)">♡ Save</button>
         </div>
-
-        <div class="video-status" id="status4">♥ Ready</div>
+        <div class="status" id="status4">♥ Ready to play</div>
       </div>
     </article>
 
-  </section>
+  </div>
 
-  <!-- GLOBAL CONTROLS -->
   <div class="toolbar">
-    <button class="tool active" onclick="playAll()">▶ PLAY ALL</button>
+    <button class="tool primary" onclick="playAll()">▶ PLAY ALL</button>
     <button class="tool" onclick="pauseAll()">Ⅱ PAUSE ALL</button>
     <button class="tool" onclick="muteAll()">♫ MUTE ALL</button>
     <button class="tool" onclick="unmuteAll()">♫ UNMUTE ALL</button>
-    <button class="tool" onclick="refreshAll()">↻ REFRESH</button>
-    <button class="tool" onclick="toggleTheater()">▣ THEATER</button>
+    <button class="tool" onclick="randomVideo()">⤨ RANDOM VIDEO</button>
+    <button class="tool" onclick="refreshAll()">↻ REPLAY ALL</button>
+  </div>
+</section>
+
+<!-- MUSIC -->
+<section class="section reveal" id="music">
+  <div class="section-head">
+    <h2>♫ Our Soundtrack</h2>
+    <span class="pill">NOW PLAYING</span>
   </div>
 
-  <!-- LOVE MESSAGE -->
-  <section class="love-message">
-    <h2>To My Favorite Person ♥</h2>
+  <div class="music-panel">
+    <div class="album" id="album">♫</div>
+    <div class="music-details">
+      <strong>Shape of My Heart</strong>
+      <p>Our special song · Akbar & Deandra</p>
+      <div class="visualizer" id="visualizer">
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+      </div>
+    </div>
+    <div class="music-controls">
+      <button onclick="toggleMusic()" id="musicToggle">▶</button>
+      <input class="volume" type="range" min="0" max="1" step=".01" value=".65" oninput="setVolume(this.value)" aria-label="Music volume">
+    </div>
+  </div>
+</section>
 
-    <p>
-      If I could choose one place to stay forever,<br>
-      I would choose every moment spent with you.<br><br>
+<!-- MILESTONES -->
+<section class="section reveal" id="milestones">
+  <div class="section-head">
+    <h2>♡ Our Little Milestones</h2>
+    <span class="pill">OUR JOURNEY</span>
+  </div>
+  <div class="milestones">
+    <div class="milestone"><div>🌷</div><strong>03 March 2026</strong><p>The beginning of us</p></div>
+    <div class="milestone"><div>💌</div><strong>100 Days</strong><p>100 days of togetherness</p></div>
+    <div class="milestone"><div>✨</div><strong>1 Year</strong><p>One beautiful year together</p></div>
+  </div>
+</section>
 
-      Thank you for being part of my life.<br>
-      No matter how far the distance is,<br>
-      you will always have a special place in my heart.
-      <br><br>
-      With love, Akbar.
-    </p>
-  </section>
-
-</main>
+<!-- LETTER -->
+<section class="section reveal">
+  <div class="letter">
+    <h2>A Letter For You</h2>
+    <p>Some feelings are too beautiful to be expressed in ordinary words.<br>There's something I want you to know, Deandra.</p>
+    <button onclick="openLetter()">OPEN MY LETTER ♥</button>
+  </div>
+</section>
 
 <footer>
-  MADE WITH LOVE · AKBAR & DEANDRA · 03.03.2026
-  <br><br>
-  OUR STORY, OUR LITTLE CINEMA ♥
+  MADE WITH <span>♥</span> BY AKBAR<br><br>
+  AKBAR & DEANDRA · 03.03.2026<br><br>
+  OUR STORY, OUR LITTLE CINEMA.
 </footer>
 
-<!-- BACKGROUND MUSIC -->
+</main>
+</div>
+
+<!-- AUDIO -->
 <audio id="bgMusic" src="shapeofmyheart.mp3" loop preload="auto"></audio>
 
-<script>
-const totalVideos = 4;
+<!-- LETTER MODAL -->
+<div class="modal" id="letterModal" onclick="outsideClose(event,'letterModal')">
+  <div class="modal-box">
+    <button class="close-modal" onclick="closeModal('letterModal')">×</button>
+    <h2>Dear Deandra ♥</h2>
+    <p>
+      Hai, kesayanganku.
 
-// LOADING SCREEN
-window.addEventListener("load", () => {
-  setTimeout(() => {
-    document.getElementById("loading").classList.add("hide");
-  }, 1200);
+      Terima kasih sudah hadir dan menjadi bagian
+      dari perjalanan hidupku.
+
+      Aku mungkin belum bisa memberikan semua
+      hal yang kamu inginkan, tapi aku selalu ingin
+      memberikan yang terbaik untuk kita.
+
+      Semoga jarak tidak pernah membuat kita
+      menyerah. Semoga setiap hari membawa kita
+      semakin dekat dengan masa depan yang kita impikan.
+
+      I love you, today and always.
+
+      Forever yours,
+      Akbar. ♥
+    </p>
+  </div>
+</div>
+
+<!-- SECRET MODAL -->
+<div class="modal" id="secretModal" onclick="outsideClose(event,'secretModal')">
+  <div class="modal-box">
+    <button class="close-modal" onclick="closeModal('secretModal')">×</button>
+    <h2>Secret Room ♡</h2>
+    <p>Only someone special can enter this little room.</p>
+    <input class="modal-input" id="secretCode" placeholder="Enter our special date..." inputmode="numeric">
+    <button class="modal-submit" onclick="checkSecret()">UNLOCK MY SECRET</button>
+  </div>
+</div>
+
+<!-- SECRET MESSAGE -->
+<div class="modal" id="secretMessage" onclick="outsideClose(event,'secretMessage')">
+  <div class="modal-box">
+    <button class="close-modal" onclick="closeModal('secretMessage')">×</button>
+    <h2>You Found Me! ♥</h2>
+    <p>
+      Your secret message:
+
+      Deandra, if you're reading this,
+      remember that you're one of my
+      favorite reasons to smile.
+
+      No matter how many days pass,
+      I'll keep choosing you.
+
+      Love, Akbar. ♥
+    </p>
+  </div>
+</div>
+
+<div id="toast">♥ Hello, love!</div>
+
+<script>
+// BASIC SETTINGS
+const total = 4;
+const $ = id => document.getElementById(id);
+
+// INTRO
+window.addEventListener("load",()=>{
+  setTimeout(()=>$("intro").classList.add("hide"),1800);
 });
 
-// DIGITAL CLOCK
-function updateClock() {
-  document.getElementById("clock").textContent =
-    new Date().toLocaleTimeString("id-ID", {
-      hour12: false
-    });
+// CLOCK
+function clock(){
+  $("clock").textContent = new Date().toLocaleTimeString("id-ID",{hour12:false});
 }
-
-updateClock();
-setInterval(updateClock, 1000);
+clock();
+setInterval(clock,1000);
 
 // RELATIONSHIP COUNTER
-const startDate = new Date(2026, 2, 3, 0, 0, 0);
-
-function updateCounter() {
-  const now = new Date();
-
-  let diff = Math.max(0, now - startDate);
-
-  const days = Math.floor(diff / 86400000);
-  const hours = Math.floor(diff / 3600000) % 24;
-  const minutes = Math.floor(diff / 60000) % 60;
-  const seconds = Math.floor(diff / 1000) % 60;
-
-  document.getElementById("days").textContent = days;
-  document.getElementById("hours").textContent =
-    String(hours).padStart(2, "0");
-  document.getElementById("minutes").textContent =
-    String(minutes).padStart(2, "0");
-  document.getElementById("seconds").textContent =
-    String(seconds).padStart(2, "0");
+const start = new Date(2026,2,3,0,0,0);
+function updateCounter(){
+  const diff = Math.max(0,Date.now()-start.getTime());
+  $("days").textContent=Math.floor(diff/86400000);
+  $("hours").textContent=String(Math.floor(diff/3600000)%24).padStart(2,"0");
+  $("minutes").textContent=String(Math.floor(diff/60000)%60).padStart(2,"0");
+  $("seconds").textContent=String(Math.floor(diff/1000)%60).padStart(2,"0");
 }
-
 updateCounter();
-setInterval(updateCounter, 1000);
+setInterval(updateCounter,1000);
 
-// VIDEO FUNCTIONS
-function getVideo(id) {
-  return document.getElementById("video" + id);
-}
+// VIDEO PLAYER
+function video(id){return $("video"+id)}
+function status(id,text){$("status"+id).textContent=text}
 
-function updateStatus(id, text) {
-  document.getElementById("status" + id).textContent = text;
-}
-
-async function playVideo(id) {
-  const video = getVideo(id);
-
-  try {
-    await video.play();
-    updateStatus(id, "♥ Playing");
-  } catch (error) {
-    updateStatus(id, "Tidak dapat diputar");
+async function playVideo(id){
+  try{
+    await video(id).play();
+    status(id,"♥ Playing now");
+    toast("Video "+id+" is playing ♥");
+  }catch(e){
+    status(id,"Tap Play again to start");
+    toast("Video tidak dapat diputar");
   }
 }
 
-function pauseVideo(id) {
-  const video = getVideo(id);
-  video.pause();
-  updateStatus(id, "Ⅱ Paused");
+function pauseVideo(id){
+  video(id).pause();
+  status(id,"Ⅱ Paused");
 }
 
-function muteVideo(id) {
-  const video = getVideo(id);
-  video.muted = !video.muted;
-
-  updateStatus(id, video.muted ? "♫ Muted" : "♫ Sound ON");
+function muteVideo(id){
+  video(id).muted=!video(id).muted;
+  status(id,video(id).muted?"♫ Muted":"♫ Sound ON");
 }
 
-function fullscreenVideo(id) {
-  const video = getVideo(id);
-
-  if (video.requestFullscreen) {
-    video.requestFullscreen();
-  } else if (video.webkitEnterFullscreen) {
-    video.webkitEnterFullscreen();
+function playAll(){
+  for(let i=1;i<=total;i++)playVideo(i);
+}
+function pauseAll(){
+  for(let i=1;i<=total;i++)pauseVideo(i);
+}
+function muteAll(){
+  for(let i=1;i<=total;i++){
+    video(i).muted=true;
+    status(i,"♫ Muted");
   }
 }
-
-// GLOBAL VIDEO CONTROLS
-function playAll() {
-  for (let i = 1; i <= totalVideos; i++) {
+function unmuteAll(){
+  for(let i=1;i<=total;i++){
+    video(i).muted=false;
+    status(i,"♫ Sound ON");
+  }
+}
+function refreshAll(){
+  for(let i=1;i<=total;i++){
+    video(i).currentTime=0;
     playVideo(i);
   }
+  toast("All videos restarted ♥");
 }
 
-function pauseAll() {
-  for (let i = 1; i <= totalVideos; i++) {
-    pauseVideo(i);
-  }
+function fullscreenVideo(id){
+  const v=video(id);
+  if(v.requestFullscreen)v.requestFullscreen();
+  else if(v.webkitEnterFullscreen)v.webkitEnterFullscreen();
 }
 
-function muteAll() {
-  for (let i = 1; i <= totalVideos; i++) {
-    getVideo(i).muted = true;
-    updateStatus(i, "♫ Muted");
-  }
-}
-
-function unmuteAll() {
-  for (let i = 1; i <= totalVideos; i++) {
-    getVideo(i).muted = false;
-    updateStatus(i, "♫ Sound ON");
-  }
-}
-
-function refreshAll() {
-  for (let i = 1; i <= totalVideos; i++) {
-    const video = getVideo(i);
-    video.currentTime = 0;
-    video.play().catch(() => {
-      updateStatus(i, "Tap Play to continue");
-    });
-  }
-}
-
-// THEATER MODE
-function toggleTheater() {
-  document.body.classList.toggle("theater");
-}
-
-// BACKGROUND MUSIC
-const music = document.getElementById("bgMusic");
-const musicBtn = document.getElementById("musicBtn");
-
-async function toggleMusic() {
-  if (music.paused) {
-    try {
-      await music.play();
-      musicBtn.textContent = "♫ MUSIC ON";
-      musicBtn.classList.add("active");
-    } catch (error) {
-      musicBtn.textContent = "♫ TRY AGAIN";
+async function pipVideo(id){
+  const v=video(id);
+  try{
+    if(document.pictureInPictureElement){
+      await document.exitPictureInPicture();
+    }else if(document.pictureInPictureEnabled){
+      await v.requestPictureInPicture();
+    }else{
+      toast("Picture in Picture not supported");
     }
-  } else {
-    music.pause();
-    musicBtn.textContent = "♫ PLAY MUSIC";
-    musicBtn.classList.remove("active");
+  }catch(e){toast("PiP tidak tersedia");}
+}
+
+// VIDEO PROGRESS & HISTORY
+const history=[];
+for(let i=1;i<=total;i++){
+  const v=video(i);
+  v.addEventListener("timeupdate",()=>{
+    const percent=v.duration?(v.currentTime/v.duration)*100:0;
+    $("progress"+i).style.width=percent+"%";
+    $("time"+i).textContent=formatTime(v.currentTime);
+  });
+  v.addEventListener("playing",()=>{
+    status(i,"♥ Playing");
+    history.unshift(i);
+    if(history.length>10)history.pop();
+  });
+  v.addEventListener("error",()=>{
+    status(i,"Video file not found or unsupported");
+  });
+}
+function formatTime(sec){
+  if(!Number.isFinite(sec))return "00:00";
+  return Math.floor(sec/60).toString().padStart(2,"0")+":"+
+    Math.floor(sec%60).toString().padStart(2,"0");
+}
+
+// FAVORITES
+let favorites=JSON.parse(localStorage.getItem("ad_favorites")||"[]");
+function updateFavorites(){
+  for(let i=1;i<=total;i++){
+    $("fav"+i).textContent=favorites.includes(i)?"♥ Saved":"♡ Save";
   }
+}
+function favorite(id){
+  favorites=favorites.includes(id)?
+    favorites.filter(x=>x!==id):[...favorites,id];
+  localStorage.setItem("ad_favorites",JSON.stringify(favorites));
+  updateFavorites();
+  toast(favorites.includes(id)?"Added to favorites ♥":"Removed from favorites");
+}
+updateFavorites();
+
+function showFavorites(){
+  if(!favorites.length){
+    toast("You don't have favorite videos yet");
+    return;
+  }
+  const ids=favorites.join(", ");
+  toast("Your favorite videos: "+ids);
+  goTo("videos");
+}
+
+// RANDOM VIDEO
+function randomVideo(){
+  const id=Math.floor(Math.random()*total)+1;
+  $("videos").scrollIntoView({behavior:"smooth"});
+  setTimeout(()=>{
+    $("video"+id).closest(".video-card").scrollIntoView({behavior:"smooth",block:"center"});
+    playVideo(id);
+  },500);
+}
+
+// MUSIC
+const music=$("bgMusic");
+let musicOn=false;
+
+async function toggleMusic(){
+  try{
+    if(music.paused){
+      await music.play();
+      musicOn=true;
+      $("musicToggle").textContent="Ⅱ";
+      $("visualizer").classList.add("playing");
+      $("album").classList.add("spin");
+      toast("Our soundtrack is playing ♫");
+    }else{
+      music.pause();
+      musicOn=false;
+      $("musicToggle").textContent="▶";
+      $("visualizer").classList.remove("playing");
+      $("album").classList.remove("spin");
+      toast("Music paused");
+    }
+  }catch(e){toast("Tap again to play music");}
+}
+
+function setVolume(value){music.volume=Number(value)}
+
+// THEME
+function toggleTheme(){
+  document.body.classList.toggle("light");
+  localStorage.setItem("ad_theme",document.body.classList.contains("light")?"light":"dark");
+}
+if(localStorage.getItem("ad_theme")==="light"){
+  document.body.classList.add("light");
+}
+
+// THEATER
+function toggleTheater(){
+  document.body.classList.toggle("theater");
+  toast(document.body.classList.contains("theater")?"Cinema mode ON":"Cinema mode OFF");
+}
+
+// NAVIGATION
+function goTo(id,btn){
+  $(id).scrollIntoView({behavior:"smooth",block:"start"});
+  document.querySelectorAll(".nav").forEach(n=>n.classList.remove("active"));
+  if(btn)btn.classList.add("active");
+}
+
+// MODALS
+function openLetter(){$("letterModal").classList.add("show")}
+function secretPrompt(){
+  $("secretCode").value="";
+  $("secretModal").classList.add("show");
+}
+function closeModal(id){$(id).classList.remove("show")}
+function outsideClose(e,id){
+  if(e.target.id===id)closeModal(id);
+}
+function checkSecret(){
+  if($("secretCode").value.trim()==="03032026"){
+    closeModal("secretModal");
+    $("secretMessage").classList.add("show");
+    toast("Secret unlocked ♥");
+    confetti();
+  }else{
+    toast("Wrong code, try again ♥");
+  }
+}
+
+// TOAST
+let toastTimer;
+function toast(message){
+  $("toast").textContent=message;
+  $("toast").classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>$("toast").classList.remove("show"),2600);
 }
 
 // FLOATING HEARTS
-function createHeart() {
-  const heart = document.createElement("div");
+function createHeart(){
+  const h=document.createElement("span");
+  h.className="particle";
+  h.textContent=["♥","♡","✦","❤"][Math.floor(Math.random()*4)];
+  h.style.left=Math.random()*100+"vw";
+  h.style.fontSize=(12+Math.random()*17)+"px";
+  h.style.animationDuration=(7+Math.random()*6)+"s";
+  $("particles").appendChild(h);
+  setTimeout(()=>h.remove(),14000);
+}
+setInterval(createHeart,1000);
 
-  heart.className = "heart";
-  heart.textContent = "♥";
-  heart.style.left = Math.random() * 100 + "vw";
-  heart.style.fontSize = (10 + Math.random() * 15) + "px";
-  heart.style.animationDuration = (6 + Math.random() * 5) + "s";
-
-  document.body.appendChild(heart);
-
-  setTimeout(() => heart.remove(), 11000);
+// CONFETTI
+function confetti(){
+  for(let i=0;i<45;i++){
+    const c=document.createElement("span");
+    c.className="particle";
+    c.textContent=["♥","✦","♡"][i%3];
+    c.style.left=Math.random()*100+"vw";
+    c.style.bottom="50%";
+    c.style.animationDuration=(2+Math.random()*3)+"s";
+    $("particles").appendChild(c);
+    setTimeout(()=>c.remove(),6000);
+  }
 }
 
-setInterval(createHeart, 1300);
-
-// VIDEO STATUS
-for (let i = 1; i <= totalVideos; i++) {
-  const video = getVideo(i);
-
-  video.addEventListener("error", () => {
-    updateStatus(i, "Video tidak ditemukan / format tidak didukung");
+// SCROLL REVEAL
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add("visible");
+      observer.unobserve(entry.target);
+    }
   });
+},{threshold:.1});
+document.querySelectorAll(".reveal").forEach(el=>observer.observe(el));
 
-  video.addEventListener("playing", () => {
-    updateStatus(i, "♥ Playing");
-  });
+// KEYBOARD SHORTCUTS
+document.addEventListener("keydown",e=>{
+  if(e.target.tagName==="INPUT")return;
+  if(e.key==="Escape"){
+    document.querySelectorAll(".modal.show").forEach(m=>m.classList.remove("show"));
+  }
+  if(e.code==="Space"){
+    e.preventDefault();
+    if(music.paused)toggleMusic();else toggleMusic();
+  }
+  if(e.key.toLowerCase()==="r")randomVideo();
+  if(e.key.toLowerCase()==="t")toggleTheater();
+});
 
-  video.addEventListener("pause", () => {
-    updateStatus(i, "Ⅱ Paused");
-  });
-}
+// EASTER EGG: klik logo 5 kali
+let logoClicks=0;
+document.querySelector(".logo").addEventListener("click",()=>{
+  logoClicks++;
+  if(logoClicks>=5){
+    logoClicks=0;
+    confetti();
+    toast("You are my favorite person ♥");
+  }
+});
 </script>
-
 </body>
 </html>
